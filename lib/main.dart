@@ -1,6 +1,7 @@
 //import 'dart:convert';
 
 import 'package:demo/services/userservice.dart';
+import 'package:demo/views/creareuser.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get.dart';
@@ -13,13 +14,14 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
+        primaryColor: Colors.green[600],
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'List of Users'),
     );
   }
 }
@@ -38,6 +40,23 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            UserAccountsDrawerHeader(
+              accountName: Text('Balaji Sonfule'),
+              accountEmail: Text("balajisonfule07@gmail.com"),
+              currentAccountPicture: CircleAvatar(
+                backgroundColor: Colors.orange,
+                child: Text(
+                  "B",
+                  style: TextStyle(fontSize: 40.0),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
       appBar: AppBar(
         title: Text(widget.title),
       ),
@@ -51,14 +70,30 @@ class _MyHomePageState extends State<MyHomePage> {
               itemCount: controller.users.length,
               itemBuilder: (context, index) {
                 return ListTile(
+                  dense: true,
+                  leading: Icon(
+                    Icons.account_circle,
+                    color: Colors.green[600],
+                  ),
                   //onTap: () {},
                   trailing: IconButton(
-                    tooltip: '${controller.users[index].id.toString()}',
+                    splashRadius: 25.0,
+                    tooltip: '${controller.users[index].mobile.toString()}',
                     icon: (Icon(Icons.remove_circle)),
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.snackbar(
+                        "Deleted Succesfully",
+                        "Undo",
+                        snackPosition: SnackPosition.BOTTOM,
+                        backgroundColor: Colors.black87,
+                        colorText: Colors.white,
+                      );
+                      userService.deleteProduct(controller.users[index].id);
+                      userService.getProduct();
+                    },
                     color: Colors.red,
                   ),
-                  title: Text(controller.users[index].title.toString()),
+                  title: Text(controller.users[index].name.toString()),
                   subtitle: Text(controller.users[index].id.toString()),
                 );
               });
@@ -66,9 +101,9 @@ class _MyHomePageState extends State<MyHomePage> {
       }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          userService.getProduct();
+          Get.to(() => CreateUser());
         },
-        tooltip: 'Increment',
+        tooltip: 'Add User',
         child: Icon(Icons.add),
       ),
     );

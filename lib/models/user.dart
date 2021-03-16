@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final User = UserFromJson(jsonString);
-
 import 'dart:convert';
 
 List<User> userFromJson(String str) =>
@@ -12,28 +8,48 @@ String userToJson(List<User> data) =>
 
 class User {
   User({
-    this.userId,
     this.id,
-    this.title,
-    this.body,
+    this.name,
+    this.myclass,
+    this.email,
+    this.mobile,
+    this.createdAt,
+    this.v,
+    this.resetPasswordExpire,
+    this.resetPasswordToken,
   });
 
-  int userId;
-  int id;
-  String title;
-  String body;
+  String id;
+  String name;
+  String myclass;
+  String email;
+  String mobile;
+  DateTime createdAt;
+  int v;
+  String resetPasswordExpire;
+  String resetPasswordToken;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-        userId: json["userId"],
-        id: json["id"],
-        title: json["title"],
-        body: json["body"],
+        id: json["_id"],
+        name: json["name"],
+        myclass: json["class"],
+        email: json["email"],
+        mobile: json["mobile"],
+        createdAt: DateTime.parse(json["createdAt"]),
+        v: json["__v"],
+        resetPasswordExpire: json["resetPasswordExpire"],
+        resetPasswordToken: json["resetPasswordToken"],
       );
 
   Map<String, dynamic> toJson() => {
-        "userId": userId,
-        "id": id,
-        "title": title,
-        "body": body,
+        "_id": id,
+        "name": name,
+        "class": myclass,
+        "email": email,
+        "mobile": mobile,
+        "createdAt": createdAt.toIso8601String(),
+        "__v": v,
+        "resetPasswordExpire": resetPasswordExpire,
+        "resetPasswordToken": resetPasswordToken,
       };
 }

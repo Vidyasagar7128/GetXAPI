@@ -14,4 +14,14 @@ class UserService extends GetxController {
     List<User> user = await ApiCall.getData();
     users.assignAll(user);
   }
+
+  postProduct(name, myclass, email, mobile, password) async {
+    await ApiCall.postData(
+        name.text, myclass.text, email.text, mobile.text, password.text);
+  }
+
+  deleteProduct(id) async {
+    await ApiCall.deleteData(id);
+    print('Id is $id');
+  }
 }
